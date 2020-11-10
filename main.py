@@ -3,6 +3,8 @@ import json
 from datetime import date
 import time
 import schedule
+from termcolor import colored
+
 
 
 
@@ -26,22 +28,20 @@ def request():
 
     response = requests.post('https://tap33.me/api/v2.3/ride/preview', headers=headers, data=data)
 
-    print(response.content)
     data = json.loads(response.content)
     data = data["data"]
 
     for catg in data['categories']:
         if catg['key'] == 'NORMAL':
-            print(catg['services'])
             for service in catg['services']:
                 if service['key'] == 'NORMAL':
                     price = service['prices']
-                    print(price[0]['passengerShare'])
+                    print(colored(str(time.strftime("%H:%M:%S", time.localtime())), 'yellow'), colored(str(price[0]['passengerShare']), 'green'))
                     write_in_file(price[0]['passengerShare'])
 
 
 def write_in_file(price):
-    fi = open("snapp.csv", 'a')
+    fi = open("tap30.csv", 'a')
     fi.write(str(price)+ ' , ' + str(date.today()) + ' , ' + str(time.strftime("%H:%M:%S", time.localtime())))
     fi.write('\n')
     fi.close()
@@ -49,7 +49,7 @@ def write_in_file(price):
 
 if __name__ == '__main__':
     print(time.strftime("%H:%M:%S", time.localtime()))
-    schedule.every(10).minutes.do(request)
+    schedule.every(1).minutes.do(request)
 
     while True:
         # Checks whether a scheduled task

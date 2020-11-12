@@ -24,22 +24,22 @@ def request():
 
     data = '{"origin":{"latitude":35.64403719765346,"longitude":51.36890864474185},"destinations":[{"latitude":35.76591873168945,"longitude":51.39497375488281}],"initiatedVia":"WEB"}'
 
-    try:
-        response = requests.post('https://tap33.me/api/v2.3/ride/preview', headers=headers, data=data)
+    # try:
+    response = requests.post('https://tap33.me/api/v2.3/ride/preview', headers=headers, data=data)
 
-        data = json.loads(response.content)
-        data = data["data"]
-        for catg in data['categories']:
-            if catg['key'] == 'NORMAL':
-                for service in catg['services']:
-                    if service['key'] == 'NORMAL':
-                        price = service['prices']
-                        print(colored(str(time.strftime("%H:%M:%S", time.localtime())), 'yellow'),
-                              colored(str(price[0]['passengerShare']), 'green'))
-                        write_in_file(price[0]['passengerShare'])
-    except:
-        print(colored('something wrong', 'red'))
-        write_in_file('something wrong')
+    data = json.loads(response.content)
+    data = data["data"]
+    for catg in data['categories']:
+        if catg['key'] == 'NORMAL':
+            for service in catg['services']:
+                if service['key'] == 'NORMAL':
+                    price = service['prices']
+                    print(colored(str(time.strftime("%H:%M:%S", time.localtime())), 'yellow'),
+                          colored(str(price[0]['passengerShare']), 'green'))
+                    write_in_file(price[0]['passengerShare'])
+# except:
+#     print(colored('something wrong', 'red'))
+#     write_in_file('something wrong')
 
 
 def write_in_file(price):

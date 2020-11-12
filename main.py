@@ -6,8 +6,6 @@ import schedule
 from termcolor import colored
 
 
-
-
 def request():
     headers = {
         'Connection': 'keep-alive',
@@ -40,13 +38,13 @@ def request():
                               colored(str(price[0]['passengerShare']), 'green'))
                         write_in_file(price[0]['passengerShare'])
     except:
-        print(colored('something wrong' , 'red'))
+        print(colored('something wrong', 'red'))
         write_in_file('something wrong')
 
 
 def write_in_file(price):
     fi = open("tap30.csv", 'a')
-    fi.write(str(price)+ ' , ' + str(date.today()) + ' , ' + str(time.strftime("%H:%M:%S", time.localtime())))
+    fi.write(str(price) + ' , ' + str(date.today()) + ' , ' + str(time.strftime("%H:%M:%S", time.localtime())))
     fi.write('\n')
     fi.close()
 
